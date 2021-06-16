@@ -1,7 +1,5 @@
 ﻿using Promotions.Model.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Promotions.Engine.Fixed
 {

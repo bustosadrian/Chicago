@@ -1,9 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FakeItEasy;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Promotions.Engine.Fixed;
 using Promotions.Interfaces;
+using Promotions.Interfaces.Repositories;
 using Promotions.Model.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Promotions.Tests
 {
@@ -11,21 +14,39 @@ namespace Promotions.Tests
     {
         private ServiceProvider provider;
 
+        private ISKURepository _skuRepository;
+        
 
         [SetUp]
         public void Setup()
         {
             IServiceCollection services = new ServiceCollection();
-            services.AddSingleton<IPromotionEngine>(BuildPromotionEngine());
+            
+            BuildRepositories();
+
+            services.AddSingleton(BuildPromotionEngine());
             provider = services.BuildServiceProvider();
+        }
+
+        private void BuildRepositories()
+        {
+            _skuRepository = A.Fake<ISKURepository>();
+            A.CallTo(() => _skuRepository.List()).Returns(
+                new List<SKU>()
+            {
+                new SKU() { Id = "A", Value = 50},
+                new SKU() { Id = "B", Value = 30},
+                new SKU() { Id = "C", Value = 20},
+                new SKU() { Id = "D", Value = 15},
+            });
         }
 
         private IPromotionEngine BuildPromotionEngine()
         {
-            IPromotionEngine retval = null;
+            FixedPromotionEngine retval = null;
 
-            var engine = new FixedPromotionEngine();
-            engine.AddPromotion(new FixedPromotion()
+            retval = new FixedPromotionEngine();
+            retval.AddPromotion(new FixedPromotion()
             {
                 Configuration = new FixedPromotionConfiguration()
                 {
@@ -33,21 +54,21 @@ namespace Promotions.Tests
                     {
                         new SKUPromotion()
                         {
-                            Skus = new List<SKU> { new SKU() { Id = "A" } },
+                            Skus = new List<SKU> { _skuRepository.List().Single( x=> x.Id == "A") },
                             Quantity = 3,
                             Value = 130,
                         },
                         new SKUPromotion()
                         {
-                            Skus = new List<SKU> { new SKU() { Id = "B" } },
+                            Skus = new List<SKU> { _skuRepository.List().Single( x=> x.Id == "B") },
                             Quantity = 2,
                             Value = 45,
                         },
                         new SKUPromotion()
                         {
                             Skus = new List<SKU> {
-                                new SKU() { Id = "C" },
-                                new SKU() { Id = "D" },
+                                _skuRepository.List().Single( x=> x.Id == "C"),
+                                _skuRepository.List().Single( x=> x.Id == "D"),
                             },
                             Quantity = 1,
                             Value = 30,
@@ -69,17 +90,17 @@ namespace Promotions.Tests
                 {
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "A"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "A"),
                         Quantity = 1,
                     },
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "B"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "B"),
                         Quantity = 1,
                     },
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "C"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "C"),
                         Quantity = 1,
                     },
                 }
@@ -99,17 +120,17 @@ namespace Promotions.Tests
                 {
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "A"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "A"),
                         Quantity = 5,
                     },
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "B"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "B"),
                         Quantity = 5,
                     },
                     new CartItem()
                     {
-                        Sku = new SKU() { Id = "C"},
+                        Sku = _skuRepository.List().Single( x=> x.Id == "C"),
                         Quantity = 1,
                     },
                 }
