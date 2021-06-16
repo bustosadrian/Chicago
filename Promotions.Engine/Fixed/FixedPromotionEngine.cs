@@ -1,18 +1,34 @@
 ﻿using Promotions.Interfaces;
 using Promotions.Model.Entities;
+using System.Collections.Generic;
 
 namespace Promotions.Engine.Fixed
 {
-    public class FixedPromotionEngine : BaseEngine, IPromotionEngine
+    public class FixedPromotionEngine : IPromotionEngine<FixedPromotion>
     {
-        public void AddPromotion(Promotion promotion)
+        private List<FixedPromotion> _promotions;
+
+        public void AddPromotion(FixedPromotion promotion)
         {
-            throw new System.NotImplementedException();
+            _promotions.Add(promotion);
         }
 
         public PromotionResult Run(Cart cart)
         {
-            throw new System.NotImplementedException();
+            PromotionResult retval = null;
+
+            
+
+            return retval;
+        }
+
+        private bool IsValid(FixedPromotion promotion, Cart cart)
+        {
+            bool retval = false;
+
+
+
+            return retval;
         }
     }
 }

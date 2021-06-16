@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using Promotions.Engine;
 using Promotions.Engine.Fixed;
 using Promotions.Interfaces;
 using Promotions.Model.Entities;
@@ -11,7 +10,7 @@ namespace Promotions.Tests
     public class FixedPromotionsTest
     {
         private ServiceProvider provider;
-        
+
 
         [SetUp]
         public void Setup()
@@ -26,29 +25,29 @@ namespace Promotions.Tests
             IPromotionEngine retval = null;
 
             var engine = new FixedPromotionEngine();
-            engine.AddPromotion(new Model.Entities.Promotion()
+            engine.AddPromotion(new FixedPromotion()
             {
                 Configuration = new FixedPromotionConfiguration()
                 {
-                    SkuPromotions = new System.Collections.Generic.List<SKUPromotion>
+                    SkuPromotions = new List<SKUPromotion>
                     {
                         new SKUPromotion()
                         {
-                            Skus = new List<SKU> { new Model.Entities.SKU() { Id = "A" } },
+                            Skus = new List<SKU> { new SKU() { Id = "A" } },
                             Quantity = 3,
                             Value = 130,
                         },
                         new SKUPromotion()
                         {
-                            Skus = new List<SKU> { new Model.Entities.SKU() { Id = "B" } },
+                            Skus = new List<SKU> { new SKU() { Id = "B" } },
                             Quantity = 2,
                             Value = 45,
                         },
                         new SKUPromotion()
                         {
                             Skus = new List<SKU> {
-                                new Model.Entities.SKU() { Id = "C" },
-                                new Model.Entities.SKU() { Id = "D" },
+                                new SKU() { Id = "C" },
+                                new SKU() { Id = "D" },
                             },
                             Quantity = 1,
                             Value = 30,

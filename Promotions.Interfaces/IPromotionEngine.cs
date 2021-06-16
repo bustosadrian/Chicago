@@ -4,8 +4,11 @@ namespace Promotions.Interfaces
 {
     public interface IPromotionEngine
     {
-        void AddPromotion(Promotion promotion);
-
         PromotionResult Run(Cart cart);
+    }
+    public interface IPromotionEngine<T> : IPromotionEngine where T : Promotion
+    {
+        void AddPromotion(T promotion);
+        
     }
 }

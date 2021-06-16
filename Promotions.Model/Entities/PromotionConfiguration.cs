@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Promotions.Model.Entities
 {
-    public abstract class PromotionConfig
+    public abstract class PromotionConfiguration
     {
 
     }

@@ -7,13 +7,14 @@
             get;
             set;
         }
+    }
 
-        public PromotionConfiguration Configuration
+    public abstract class Promotion<T> : Promotion where T : PromotionConfiguration
+    {
+        public T Configuration
         {
             get;
             set;
         }
-
-
     }
 }
